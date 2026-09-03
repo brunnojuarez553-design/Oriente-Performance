@@ -274,19 +274,31 @@ section{padding:100px 0;}
   background-size:cover;background-position:center;background-attachment:scroll;
 }
 .service-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);}
+
+/* ---- Mobile: tarjetas compactas tipo tile (solo nombre), el detalle vive en el modal ---- */
 @media(max-width:800px){
-  .service-card{padding:22px 18px;}
-  .service-card h3{font-size:1.2rem;margin-top:10px;margin-bottom:8px;}
-  .service-card p{font-size:0.84rem;max-width:none;}
-  .service-index{font-size:0.72rem;}
-  .service-foot{flex-direction:column;align-items:flex-start;gap:10px;margin-top:14px;}
-  .service-card .tag{font-size:0.62rem;padding:3px 8px;}
-  .service-consult{font-size:0.8rem;padding:9px 10px;width:100%;justify-content:center;}
+  .service-card{
+    padding:16px 14px;min-height:150px;display:flex;flex-direction:column;justify-content:flex-end;
+    cursor:pointer;-webkit-tap-highlight-color:transparent;
+    transition:background 0.25s, transform 0.15s;
+  }
+  .service-card:active{transform:scale(0.97);}
+  .service-card h3{font-size:1.05rem;margin-top:0;margin-bottom:0;line-height:1.15;}
+  .service-index{font-size:0.68rem;margin-bottom:auto;}
+  /* la descripción y el botón original se ocultan: el detalle y el CTA viven en el modal */
+  .service-card p,
+  .service-card .service-foot{display:none;}
+  .service-card::after{
+    content:'+';position:absolute;top:14px;right:14px;z-index:1;
+    width:26px;height:26px;border-radius:50%;border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--display);font-size:1.1rem;color:var(--steel);
+    background:rgba(10,10,11,0.5);
+  }
 }
 @media(max-width:400px){
-  .service-card{padding:18px 14px;}
-  .service-card h3{font-size:1.05rem;}
-  .service-card p{font-size:0.78rem;}
+  .service-card{padding:14px 12px;min-height:132px;}
+  .service-card h3{font-size:0.98rem;}
 }
 .service-card{
   background:var(--black-2);padding:38px 34px;position:relative;
@@ -320,6 +332,61 @@ section{padding:100px 0;}
 }
 .service-consult:hover{border-color:var(--red);background:rgba(200,30,30,0.1);color:#fff;}
 .service-consult svg{flex-shrink:0;}
+
+/* ---------- SERVICE MODAL (bottom sheet en mobile) ---------- */
+.service-modal-backdrop{
+  position:fixed;inset:0;z-index:300;
+  background:rgba(6,6,7,0.7);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);
+  opacity:0;pointer-events:none;transition:opacity 0.3s ease;
+}
+.service-modal-backdrop.open{opacity:1;pointer-events:auto;}
+.service-modal{
+  position:fixed;left:0;right:0;bottom:0;z-index:301;
+  max-width:520px;margin:0 auto;
+  background:var(--black-2);border:1px solid var(--line);border-bottom:none;
+  border-radius:18px 18px 0 0;
+  max-height:86vh;overflow-y:auto;-webkit-overflow-scrolling:touch;
+  transform:translateY(100%);
+  transition:transform 0.42s cubic-bezier(.2,.8,.2,1);
+  box-shadow:0 -20px 60px rgba(0,0,0,0.5);
+}
+.service-modal.open{transform:translateY(0);}
+.service-modal-handle{
+  width:36px;height:4px;border-radius:2px;background:var(--line);
+  margin:12px auto 0;
+}
+.service-modal-media{
+  height:150px;background-size:cover;background-position:center;position:relative;
+  border-radius:18px 18px 0 0;margin-top:12px;
+}
+.service-modal-media::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg, rgba(17,18,20,0.15) 0%, var(--black-2) 100%);
+}
+.service-modal-close{
+  position:absolute;top:14px;right:14px;z-index:2;
+  width:32px;height:32px;border-radius:50%;background:rgba(10,10,11,0.55);
+  border:1px solid var(--line);color:#fff;font-size:1.2rem;line-height:1;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;
+}
+.service-modal-body{padding:22px 24px 26px;}
+.service-modal-index{font-family:var(--mono);color:var(--steel-dim);font-size:0.8rem;}
+.service-modal-body h3{
+  font-family:var(--display);font-weight:700;font-size:1.7rem;margin-top:8px;margin-bottom:14px;
+}
+.service-modal-body p{color:var(--steel);font-size:0.98rem;line-height:1.6;}
+.service-modal-tag{
+  display:inline-block;margin-top:16px;font-family:var(--mono);font-size:0.72rem;
+  color:var(--amber);border:1px solid rgba(216,154,62,0.3);padding:4px 10px;
+}
+.service-modal-cta{
+  display:flex;align-items:center;justify-content:center;gap:10px;width:100%;
+  margin-top:22px;background:var(--red);color:#fff;border:none;border-radius:2px;
+  padding:15px 20px;font-family:var(--display);font-weight:600;font-size:1.05rem;
+  letter-spacing:0.02em;cursor:pointer;transition:background 0.2s;
+}
+.service-modal-cta:hover{background:#a91717;}
+@media(min-width:801px){ .service-modal-backdrop, .service-modal{display:none;} }
 
 /* ---------- WHY / TRUST ---------- */
 .trust{display:grid;grid-template-columns:1.1fr 0.9fr;gap:70px;align-items:start;}
@@ -831,6 +898,25 @@ footer{border-top:1px solid var(--line);padding:34px 0;}
   </form>
 </div>
 
+<!-- Modal de detalle de servicio (bottom sheet en mobile) -->
+<div class="service-modal-backdrop" id="serviceModalBackdrop"></div>
+<div class="service-modal" id="serviceModal" role="dialog" aria-modal="true" aria-labelledby="serviceModalTitle">
+  <div class="service-modal-handle"></div>
+  <div class="service-modal-media" id="serviceModalMedia">
+    <button class="service-modal-close" id="serviceModalClose" aria-label="Cerrar">×</button>
+  </div>
+  <div class="service-modal-body">
+    <div class="service-modal-index" id="serviceModalIndex"></div>
+    <h3 id="serviceModalTitle"></h3>
+    <p id="serviceModalDesc"></p>
+    <span class="service-modal-tag" id="serviceModalTag"></span>
+    <button class="service-modal-cta" id="serviceModalCta">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.6 6.32A7.85 7.85 0 0 0 12.05 4a7.94 7.94 0 0 0-6.9 11.9L4 20l4.2-1.1a7.9 7.9 0 0 0 3.85 1h0a7.94 7.94 0 0 0 5.55-13.58z"/></svg>
+      Consultar sobre este servicio
+    </button>
+  </div>
+</div>
+
 <script>
 // ---- Preloader ----
 (function(){
@@ -1114,6 +1200,90 @@ function consultarServicio(btn){
   if(starting && p){ p.then(()=> sendToAssistant(text)); }
   else { sendToAssistant(text); }
 }
+
+// ---- Modal de detalle de servicio (solo se activa como bottom sheet en mobile) ----
+(function(){
+  const backdrop = document.getElementById('serviceModalBackdrop');
+  const modal = document.getElementById('serviceModal');
+  const media = document.getElementById('serviceModalMedia');
+  const closeBtn = document.getElementById('serviceModalClose');
+  const idxEl = document.getElementById('serviceModalIndex');
+  const titleEl = document.getElementById('serviceModalTitle');
+  const descEl = document.getElementById('serviceModalDesc');
+  const tagEl = document.getElementById('serviceModalTag');
+  const ctaBtn = document.getElementById('serviceModalCta');
+  if(!backdrop || !modal) return;
+
+  let currentServicio = null;
+
+  function isMobile(){ return window.matchMedia('(max-width:800px)').matches; }
+
+  function openServiceModal(card){
+    const h3 = card.querySelector('h3');
+    const p = card.querySelector('p');
+    const tag = card.querySelector('.tag');
+    const consultBtn = card.querySelector('.service-consult');
+    const indexEl = card.querySelector('.service-index');
+    const bg = card.dataset.bgSrc || card.style.backgroundImage.replace(/^url\(['"]?/,'').replace(/['"]?\)$/,'');
+
+    titleEl.textContent = h3 ? h3.textContent : '';
+    descEl.textContent = p ? p.textContent : '';
+    idxEl.textContent = indexEl ? indexEl.textContent : '';
+    if(tag){ tagEl.textContent = tag.textContent; tagEl.style.display = 'inline-block'; }
+    else { tagEl.style.display = 'none'; }
+    if(bg) media.style.backgroundImage = `url('${bg}')`;
+    currentServicio = consultBtn ? consultBtn.getAttribute('data-service') : (h3 ? h3.textContent : '');
+
+    backdrop.classList.add('open');
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeServiceModal(){
+    backdrop.classList.remove('open');
+    modal.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  document.querySelectorAll('.service-card').forEach(card=>{
+    card.addEventListener('click', (e)=>{
+      if(!isMobile()) return; // en desktop el hover ya muestra el detalle
+      openServiceModal(card);
+    });
+  });
+
+  backdrop.addEventListener('click', closeServiceModal);
+  closeBtn.addEventListener('click', closeServiceModal);
+  document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeServiceModal(); });
+
+  ctaBtn.addEventListener('click', ()=>{
+    closeServiceModal();
+    const text = `Quiero información sobre ${currentServicio}`;
+    const starting = !aiStarted;
+    const p = openAiPanel();
+    if(starting && p){ p.then(()=> sendToAssistant(text)); }
+    else { sendToAssistant(text); }
+  });
+
+  // swipe-down para cerrar (premium, sensación nativa)
+  let startY = 0, currentY = 0, dragging = false;
+  modal.addEventListener('touchstart', (e)=>{
+    startY = e.touches[0].clientY; dragging = true;
+    modal.style.transition = 'none';
+  }, {passive:true});
+  modal.addEventListener('touchmove', (e)=>{
+    if(!dragging) return;
+    currentY = e.touches[0].clientY - startY;
+    if(currentY > 0) modal.style.transform = `translateY(${currentY}px)`;
+  }, {passive:true});
+  modal.addEventListener('touchend', ()=>{
+    dragging = false;
+    modal.style.transition = '';
+    if(currentY > 90){ modal.style.transform = ''; closeServiceModal(); }
+    else { modal.style.transform = ''; }
+    currentY = 0;
+  });
+})();
 </script>
 </body>
 </html>
