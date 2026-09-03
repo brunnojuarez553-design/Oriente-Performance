@@ -1,0 +1,21 @@
+{
+  "name": "Oriente Performance",
+  "short_name": "Oriente Perf.",
+  "description": "Taller multimarcas — reprogramación ECU, entonación y eliminación de EGR en Barcelona, Anzoátegui.",
+  "icons": [
+    {
+      "src": "https://res.cloudinary.com/dpiavcukm/image/upload/c_fill,w_192,h_192/v1788387426/IMG_1067_vy10qv.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "https://res.cloudinary.com/dpiavcukm/image/upload/c_fill,w_512,h_512/v1788387426/IMG_1067_vy10qv.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ],
+  "theme_color": "#0A0A0B",
+  "background_color": "#0A0A0B",
+  "display": "standalone",
+  "start_url": "."
+}
