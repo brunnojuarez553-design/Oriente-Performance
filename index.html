@@ -265,6 +265,43 @@ h1.hero-title .line2{color:var(--steel);}
 section{padding:100px 0;}
 @media(max-width:640px){section{padding:70px 0;}}
 
+/* ---------- FLEET CTA ---------- */
+.fleet{
+  position:relative;border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  overflow:hidden;
+}
+.fleet-bg{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;
+  filter:brightness(0.5) saturate(1.05);
+}
+.fleet-overlay{
+  position:absolute;inset:0;z-index:1;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(216,154,62,0.12), transparent 45%),
+    linear-gradient(180deg, rgba(10,10,11,0.75) 0%, rgba(10,10,11,0.55) 45%, rgba(10,10,11,0.92) 100%);
+}
+.fleet .wrap{position:relative;z-index:2;}
+.fleet-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:60px;align-items:start;}
+@media(max-width:800px){.fleet-grid{grid-template-columns:1fr;gap:36px;}}
+.fleet-copy p.section-desc{margin-top:16px;}
+.fleet-points{margin-top:32px;display:flex;flex-direction:column;gap:16px;}
+.fleet-point{display:flex;gap:12px;font-size:0.95rem;color:var(--steel);}
+.fleet-point span{color:var(--amber);font-family:var(--mono);font-size:0.85rem;flex-shrink:0;}
+.fleet-form{border:1px solid var(--line);background:rgba(10,10,11,0.72);backdrop-filter:blur(6px);padding:32px;}
+.fleet-form h4{font-family:var(--mono);color:var(--amber);font-size:0.75rem;letter-spacing:0.06em;margin-bottom:22px;}
+.fleet-field{margin-bottom:16px;}
+.fleet-field label{display:block;font-size:0.78rem;color:var(--steel);margin-bottom:6px;font-family:var(--mono);letter-spacing:0.02em;}
+.fleet-field input,.fleet-field select,.fleet-field textarea{
+  width:100%;background:var(--black-2);border:1px solid var(--line);color:var(--off-white);
+  padding:12px 14px;font-family:var(--body);font-size:0.95rem;border-radius:2px;transition:border-color 0.2s ease;
+}
+.fleet-field input:focus,.fleet-field select:focus,.fleet-field textarea:focus{outline:none;border-color:var(--amber);}
+.fleet-field textarea{resize:vertical;min-height:80px;}
+.fleet-row2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+@media(max-width:480px){.fleet-row2{grid-template-columns:1fr;}}
+.fleet-form .btn-primary{width:100%;justify-content:center;margin-top:6px;border:none;cursor:pointer;font-family:inherit;font-size:0.95rem;}
+.fleet-note{margin-top:12px;font-size:0.78rem;color:var(--steel-dim);text-align:center;}
+
 /* ---------- SERVICES ---------- */
 .services{
   position:relative;background:var(--black-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line);
@@ -982,6 +1019,53 @@ footer{border-top:1px solid var(--line);padding:34px 0;}
   </div>
 </section>
 
+<!-- FLEET CTA -->
+<section class="fleet" id="flota">
+  <img class="fleet-bg" src="https://res.cloudinary.com/dpiavcukm/image/upload/v1788387426/IMG_1072_rmer1a.jpg" alt="" loading="lazy" decoding="async">
+  <div class="fleet-overlay"></div>
+  <div class="wrap">
+    <div class="fleet-grid" data-reveal-group>
+      <div class="fleet-copy reveal">
+        <div class="section-num">Flotas 0km</div>
+        <h2 class="section-title">¿Tenés una flota 0km recién importada?</h2>
+        <p class="section-desc">La adaptamos a nuestro mercado con nuestros servicios: eliminación de EGR con reprogramación y puesta a punto para el combustible y las condiciones locales — unidad por unidad o flota completa.</p>
+        <div class="fleet-points">
+          <div class="fleet-point"><span>01</span> Eliminación de EGR con reprogramación incluida, por unidad, con reporte técnico de cada vehículo.</div>
+          <div class="fleet-point"><span>02</span> Ajustes para adaptar la ECU al combustible y condiciones de uso locales.</div>
+          <div class="fleet-point"><span>03</span> Coordinación de agenda para flotas completas, sin parar la operación.</div>
+        </div>
+      </div>
+      <form class="fleet-form reveal" id="fleetForm" onsubmit="return sendFleetForm(event);">
+        <h4>SOLICITAR COTIZACIÓN DE FLOTA</h4>
+        <div class="fleet-field">
+          <label for="fleetName">Nombre / Empresa</label>
+          <input type="text" id="fleetName" required placeholder="Ej: Transportes Anzoátegui C.A.">
+        </div>
+        <div class="fleet-row2">
+          <div class="fleet-field">
+            <label for="fleetPhone">Teléfono / WhatsApp</label>
+            <input type="tel" id="fleetPhone" required placeholder="04XX-XXXXXXX">
+          </div>
+          <div class="fleet-field">
+            <label for="fleetUnits">Cantidad de unidades</label>
+            <input type="number" id="fleetUnits" min="1" required placeholder="Ej: 8">
+          </div>
+        </div>
+        <div class="fleet-field">
+          <label for="fleetModel">Marca y modelo</label>
+          <input type="text" id="fleetModel" required placeholder="Ej: Toyota Hilux 2026">
+        </div>
+        <div class="fleet-field">
+          <label for="fleetMsg">Detalles adicionales (opcional)</label>
+          <textarea id="fleetMsg" placeholder="País de origen, fecha estimada de llegada, requerimientos particulares..."></textarea>
+        </div>
+        <button type="submit" class="btn-primary">Enviar por WhatsApp →</button>
+        <p class="fleet-note">Te contactamos directo por WhatsApp con esta información.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
 <!-- CONTACT -->
 <section class="contact" id="contacto">
   <div class="wrap">
@@ -1311,6 +1395,27 @@ async function sendToAssistant(userText){
     aiTyping.style.display = 'none';
     addMsg('assistant', 'Se me cortó la conexión. Escribinos directo por WhatsApp y seguimos ahí.');
   }
+}
+
+// ---- Formulario de flota 0km -> WhatsApp ----
+function sendFleetForm(e){
+  e.preventDefault();
+  const name = document.getElementById('fleetName').value.trim();
+  const phone = document.getElementById('fleetPhone').value.trim();
+  const units = document.getElementById('fleetUnits').value.trim();
+  const model = document.getElementById('fleetModel').value.trim();
+  const msg = document.getElementById('fleetMsg').value.trim();
+
+  let text = `Hola, tengo una flota 0km recién importada y quiero cotizar sus servicios:\n\n`;
+  text += `*Nombre/Empresa:* ${name}\n`;
+  text += `*Teléfono:* ${phone}\n`;
+  text += `*Cantidad de unidades:* ${units}\n`;
+  text += `*Marca y modelo:* ${model}\n`;
+  if(msg) text += `*Detalles:* ${msg}\n`;
+
+  const url = `https://wa.me/584248880603?text=${encodeURIComponent(text)}`;
+  window.open(url, '_blank', 'noopener');
+  return false;
 }
 
 function openAiPanel(){
