@@ -274,16 +274,56 @@ section{padding:100px 0;}
   background-size:cover;background-position:center;background-attachment:scroll;
 }
 .service-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);}
+.service-card{
+  background:var(--black-2);padding:38px 34px;position:relative;
+  min-width:0;
+  transition:background 0.25s;
+  background-size:cover;background-position:center;
+  isolation:isolate;
+}
+.service-card::before{
+  content:'';position:absolute;inset:0;z-index:0;
+  background:linear-gradient(105deg, rgba(10,10,11,0.94) 0%, rgba(10,10,11,0.88) 38%, rgba(10,10,11,0.55) 100%);
+  transition:background 0.25s;
+}
+.service-card:hover::before{background:linear-gradient(105deg, rgba(10,10,11,0.88) 0%, rgba(10,10,11,0.8) 38%, rgba(10,10,11,0.42) 100%);}
+.service-card > *{position:relative;z-index:1;}
+.service-card:hover{background:#15161a;}
+.service-index{font-family:var(--mono);color:var(--steel-dim);font-size:0.85rem;}
+.service-card h3{
+  font-family:var(--display);font-weight:700;font-size:1.6rem;margin-top:14px;margin-bottom:12px;
+  min-width:0;
+}
+.service-card p{color:var(--steel);font-size:0.96rem;max-width:42ch;}
+.service-foot{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-top:18px;}
+.service-card .tag{
+  display:inline-block;font-family:var(--mono);font-size:0.72rem;
+  color:var(--amber);border:1px solid rgba(216,154,62,0.3);padding:4px 10px;
+}
+.service-consult{
+  display:inline-flex;align-items:center;gap:8px;
+  background:transparent;border:1px solid var(--line);color:var(--off-white);
+  padding:9px 14px;font-family:var(--body);font-size:0.88rem;font-weight:500;cursor:pointer;
+  transition:border-color 0.2s, background 0.2s, color 0.2s;
+}
+.service-consult:hover{border-color:var(--red);background:rgba(200,30,30,0.1);color:#fff;}
+.service-consult svg{flex-shrink:0;}
 
 /* ---- Mobile: tarjetas compactas tipo tile (solo nombre), el detalle vive en el modal ---- */
+/* IMPORTANTE: este bloque va DESPUÉS de las reglas base de .service-card para que
+   el cascade lo respete correctamente en viewports angostos (misma especificidad). */
 @media(max-width:800px){
   .service-card{
     padding:16px 14px;min-height:150px;display:flex;flex-direction:column;justify-content:flex-end;
     cursor:pointer;-webkit-tap-highlight-color:transparent;
+    min-width:0;max-width:100%;overflow:hidden;
     transition:background 0.25s, transform 0.15s;
   }
   .service-card:active{transform:scale(0.97);}
-  .service-card h3{font-size:1.05rem;margin-top:0;margin-bottom:0;line-height:1.15;}
+  .service-card h3{
+    font-size:1rem;margin-top:0;margin-bottom:0;line-height:1.2;
+    min-width:0;max-width:100%;overflow-wrap:anywhere;
+  }
   .service-index{font-size:0.68rem;margin-bottom:auto;}
   /* la descripción y el botón original se ocultan: el detalle y el CTA viven en el modal */
   .service-card p,
@@ -300,38 +340,6 @@ section{padding:100px 0;}
   .service-card{padding:14px 12px;min-height:132px;}
   .service-card h3{font-size:0.98rem;}
 }
-.service-card{
-  background:var(--black-2);padding:38px 34px;position:relative;
-  transition:background 0.25s;
-  background-size:cover;background-position:center;
-  isolation:isolate;
-}
-.service-card::before{
-  content:'';position:absolute;inset:0;z-index:0;
-  background:linear-gradient(105deg, rgba(10,10,11,0.94) 0%, rgba(10,10,11,0.88) 38%, rgba(10,10,11,0.55) 100%);
-  transition:background 0.25s;
-}
-.service-card:hover::before{background:linear-gradient(105deg, rgba(10,10,11,0.88) 0%, rgba(10,10,11,0.8) 38%, rgba(10,10,11,0.42) 100%);}
-.service-card > *{position:relative;z-index:1;}
-.service-card:hover{background:#15161a;}
-.service-index{font-family:var(--mono);color:var(--steel-dim);font-size:0.85rem;}
-.service-card h3{
-  font-family:var(--display);font-weight:700;font-size:1.6rem;margin-top:14px;margin-bottom:12px;
-}
-.service-card p{color:var(--steel);font-size:0.96rem;max-width:42ch;}
-.service-foot{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-top:18px;}
-.service-card .tag{
-  display:inline-block;font-family:var(--mono);font-size:0.72rem;
-  color:var(--amber);border:1px solid rgba(216,154,62,0.3);padding:4px 10px;
-}
-.service-consult{
-  display:inline-flex;align-items:center;gap:8px;
-  background:transparent;border:1px solid var(--line);color:var(--off-white);
-  padding:9px 14px;font-family:var(--body);font-size:0.88rem;font-weight:500;cursor:pointer;
-  transition:border-color 0.2s, background 0.2s, color 0.2s;
-}
-.service-consult:hover{border-color:var(--red);background:rgba(200,30,30,0.1);color:#fff;}
-.service-consult svg{flex-shrink:0;}
 
 /* ---------- SERVICE MODAL (bottom sheet en mobile) ---------- */
 .service-modal-backdrop{
@@ -426,6 +434,31 @@ section{padding:100px 0;}
 .gallery-caption .veh{font-family:var(--display);font-weight:700;font-size:1.15rem;line-height:1.1;}
 .gallery-caption .work{font-family:var(--mono);font-size:0.68rem;color:var(--amber);letter-spacing:0.02em;margin-top:6px;display:block;}
 .gallery-note{color:var(--steel);font-size:0.9rem;margin-top:18px;font-style:italic;}
+.gallery-swipe-hint{display:none;}
+
+/* ---- Mobile: collage desordenado con scroll horizontal, no lista vertical ---- */
+@media(max-width:560px){
+  .gallery-swipe-hint{
+    display:flex;align-items:center;gap:8px;
+    font-family:var(--mono);font-size:0.72rem;color:var(--steel-dim);
+    letter-spacing:0.04em;margin-bottom:18px;
+  }
+  .gallery-grid{
+    display:flex;gap:26px;
+    margin:0 -20px;padding:14px 20px 30px;
+    overflow-x:auto;scroll-snap-type:x proximity;
+    scrollbar-width:none;-ms-overflow-style:none;
+  }
+  .gallery-grid::-webkit-scrollbar{display:none;}
+  .gallery-item{
+    flex:0 0 68%;scroll-snap-align:center;border-radius:4px;
+    box-shadow:0 20px 44px rgba(0,0,0,0.6);
+  }
+  .gallery-item.in-view:nth-child(odd){transform:rotate(-2.2deg) translateY(0);}
+  .gallery-item.in-view:nth-child(even){transform:rotate(2.4deg) translateY(26px);}
+  .gallery-item.in-view:nth-child(3n){transform:rotate(-1.4deg) translateY(10px);}
+  .gallery-note{margin-top:4px;padding:0 20px;}
+}
 
 /* ---------- MARCAS ATENDIDAS ---------- */
 .brands-strip{
@@ -466,7 +499,7 @@ section{padding:100px 0;}
 .testimonial-foot{font-family:var(--mono);font-size:0.7rem;color:var(--steel-dim);letter-spacing:0.04em;margin-top:18px;padding-top:14px;border-top:1px solid var(--line);}
 .reviews-honest{
   border:1px solid var(--line);background:rgba(255,255,255,0.02);
-  padding:34px 30px;text-align:center;
+  padding:34px 30px;text-align:center;margin-top:34px;
 }
 .reviews-honest p{color:var(--steel);max-width:52ch;margin:10px auto 0;font-size:0.98rem;}
 .reviews-honest .big-num{font-family:var(--display);font-weight:800;font-size:2.4rem;color:var(--off-white);}
@@ -476,6 +509,44 @@ section{padding:100px 0;}
   font-family:var(--display);font-weight:600;font-size:0.95rem;transition:border-color 0.2s, background 0.2s;
 }
 .reviews-honest a:hover{border-color:var(--red);background:rgba(200,30,30,0.1);}
+
+/* ---------- FAQ ---------- */
+.faq{
+  position:relative;border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  background-image:
+    linear-gradient(180deg, rgba(10,10,11,0.93) 0%, rgba(10,10,11,0.88) 45%, rgba(10,10,11,0.96) 100%),
+    url('https://res.cloudinary.com/dpiavcukm/image/upload/v1788387425/IMG_1075_zwi1rb.jpg');
+  background-size:cover;background-position:center;background-attachment:scroll;
+}
+.faq-list{margin-top:8px;border-top:1px solid var(--line);}
+.faq-item{border-bottom:1px solid var(--line);}
+.faq-q{
+  display:flex;align-items:center;justify-content:space-between;gap:20px;
+  padding:22px 4px;cursor:pointer;-webkit-tap-highlight-color:transparent;
+}
+.faq-q span:first-child{
+  font-family:var(--display);font-weight:600;font-size:1.15rem;color:var(--off-white);
+}
+.faq-icon{
+  position:relative;flex-shrink:0;width:20px;height:20px;
+}
+.faq-icon::before,.faq-icon::after{
+  content:'';position:absolute;background:var(--steel);top:50%;left:50%;
+  transform:translate(-50%,-50%);transition:transform 0.25s ease, opacity 0.25s ease;
+}
+.faq-icon::before{width:14px;height:1.5px;}
+.faq-icon::after{width:1.5px;height:14px;}
+.faq-item.open .faq-icon::after{transform:translate(-50%,-50%) rotate(90deg);opacity:0;}
+.faq-item.open .faq-q span:first-child{color:var(--red);}
+.faq-a{
+  max-height:0;overflow:hidden;transition:max-height 0.35s ease, padding 0.35s ease;
+  color:var(--steel);font-size:0.98rem;line-height:1.6;max-width:64ch;
+}
+.faq-item.open .faq-a{max-height:220px;padding:0 4px 22px;}
+@media(max-width:640px){
+  .faq-q span:first-child{font-size:1.02rem;}
+  .faq-q{padding:18px 2px;}
+}
 
 /* ---------- MAPA ---------- */
 .map-embed{
@@ -767,6 +838,7 @@ footer{border-top:1px solid var(--line);padding:34px 0;}
       <div class="section-num reveal">03 — Trabajos</div>
       <h2 class="section-title reveal">Trabajos realizados</h2>
     </div>
+    <div class="gallery-swipe-hint">← Deslizá para ver más trabajos →</div>
     <div class="gallery-grid">
       <div class="gallery-item">
         <img src="https://res.cloudinary.com/dpiavcukm/image/upload/v1788387425/IMG_1068_wko6aw.jpg" alt="Toyota Tundra 2024 Twin Turbo — Stage 1" loading="lazy" decoding="async">
@@ -828,11 +900,84 @@ footer{border-top:1px solid var(--line);padding:34px 0;}
     <div class="eyebrow-block" data-reveal-group>
       <div class="section-num reveal">04 — Clientes</div>
       <h2 class="section-title reveal">Lo que dicen los que ya pasaron por el taller</h2>
+      <p class="section-desc reveal">Todavía no tenemos reseñas publicadas — preferimos sumarlas reales, con nombre y carro, antes que inventar algo genérico.</p>
     </div>
-    <div class="reviews-honest reveal" data-reveal-group>
-      <div class="big-num">7+</div>
-      <p>Trabajos reales entregados y documentados en la sección de arriba — Toyota, Chevrolet y más. Las reseñas de clientes se están sumando; mientras tanto, mirá los casos reales o escribinos directo para hablar con alguien que ya pasó por el taller.</p>
-      <a href="https://www.instagram.com/orienteperformance" target="_blank" rel="noopener">Ver más casos en Instagram →</a>
+    <div class="testimonial-grid" data-reveal-group>
+      <div class="testimonial-card reveal">
+        <div class="testimonial-mark">❝</div>
+        <p class="testimonial-placeholder">Acá va a aparecer la reseña real de uno de nuestros clientes, tal cual la escribió — sin editar, sin inventar.</p>
+        <div class="testimonial-foot">RESEÑA VERIFICADA · PRÓXIMAMENTE</div>
+      </div>
+      <div class="testimonial-card reveal">
+        <div class="testimonial-mark">❝</div>
+        <p class="testimonial-placeholder">Este espacio está reservado para la opinión de alguien que ya trajo su carro y vivió el proceso de diagnóstico completo.</p>
+        <div class="testimonial-foot">RESEÑA VERIFICADA · PRÓXIMAMENTE</div>
+      </div>
+      <div class="testimonial-card reveal">
+        <div class="testimonial-mark">❝</div>
+        <p class="testimonial-placeholder">Preferimos este cartel vacío por ahora antes que una reseña trucha. Las reales ya están en camino.</p>
+        <div class="testimonial-foot">RESEÑA VERIFICADA · PRÓXIMAMENTE</div>
+      </div>
+    </div>
+    <div class="reviews-honest" data-reveal-group>
+      <div class="big-num reveal">7+</div>
+      <p class="reveal">Trabajos reales entregados y documentados en la sección de arriba — Toyota, Chevrolet y más. Las reseñas de clientes se están sumando; mientras tanto, mirá los casos reales o escribinos directo para hablar con alguien que ya pasó por el taller.</p>
+      <a class="reveal" href="https://www.instagram.com/orienteperformance" target="_blank" rel="noopener">Ver más casos en Instagram →</a>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq" id="faq">
+  <div class="wrap">
+    <div class="eyebrow-block" data-reveal-group>
+      <div class="section-num reveal">05 — Preguntas frecuentes</div>
+      <h2 class="section-title reveal">Antes de traer el carro, resolvé esto</h2>
+      <p class="section-desc reveal">Las dudas más comunes de quienes están por reprogramar o entonar su motor por primera vez.</p>
+    </div>
+    <div class="faq-list" data-reveal-group>
+      <div class="faq-item reveal">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          <span>¿Reprogramar el ECU anula la garantía de fábrica?</span>
+          <span class="faq-icon"></span>
+        </div>
+        <div class="faq-a">Depende del fabricante y de si el carro sigue en garantía activa. Por eso el primer paso siempre es el diagnóstico: ahí te decimos con datos reales si conviene reprogramar ahora o esperar, sin presionarte a hacer algo que te convenga a vos.</div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          <span>¿Es seguro eliminar el EGR en mi camioneta?</span>
+          <span class="faq-icon"></span>
+        </div>
+        <div class="faq-a">Sí, siempre que se haga con la reprogramación correspondiente incluida — nunca solo tapando la válvula. Eliminar el EGR sin ajustar los mapas del motor es lo que realmente genera problemas. Nosotros lo hacemos como un solo trabajo, no por partes.</div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          <span>¿Cuánto tarda un diagnóstico completo?</span>
+          <span class="faq-icon"></span>
+        </div>
+        <div class="faq-a">El escaneo y la lectura de parámetros en vivo suelen tomar entre 30 y 60 minutos, según la marca y cuántos módulos tenga el vehículo. Con eso ya sabemos qué le pasa de verdad al motor, antes de tocar nada.</div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          <span>¿Atienden otras marcas además de Toyota?</span>
+          <span class="faq-icon"></span>
+        </div>
+        <div class="faq-a">Sí. Aunque gran parte de los casos documentados son Toyota, somos un taller multimarcas — trabajamos Chevrolet y otras marcas con el mismo nivel de diagnóstico y reprogramación.</div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          <span>¿Qué pasa si el carro no mejora después del ajuste?</span>
+          <span class="faq-icon"></span>
+        </div>
+        <div class="faq-a">No arrancamos ningún ajuste sin el diagnóstico previo justamente para evitar eso: reprogramamos sobre datos reales del motor, no sobre una plantilla genérica. Si algo no queda como esperabas, volvés y lo revisamos.</div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          <span>¿Necesito agendar cita o puedo llegar directo?</span>
+          <span class="faq-icon"></span>
+        </div>
+        <div class="faq-a">Lo ideal es escribirnos antes por WhatsApp, contarnos marca, modelo y qué notás en el motor. Así llegás y arrancamos directo con el diagnóstico, sin perder tiempo de espera.</div>
+      </div>
     </div>
   </div>
 </section>
@@ -841,7 +986,7 @@ footer{border-top:1px solid var(--line);padding:34px 0;}
 <section class="contact" id="contacto">
   <div class="wrap">
     <div class="eyebrow-block" data-reveal-group>
-      <div class="section-num reveal">05 — Contacto</div>
+      <div class="section-num reveal">06 — Contacto</div>
       <h2 class="section-title reveal">Traé el carro, empezamos por el diagnóstico</h2>
     </div>
     <div class="contact-grid" data-reveal-group>
@@ -1005,6 +1150,14 @@ function toggleScan(row){
   const wasOpen = explain.classList.contains('open');
   document.querySelectorAll('.scan-explain.open').forEach(e=>e.classList.remove('open'));
   if(!wasOpen) explain.classList.add('open');
+}
+
+// FAQ — acordeón (una pregunta abierta a la vez)
+function toggleFaq(q){
+  const item = q.closest('.faq-item');
+  const wasOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(el=>el.classList.remove('open'));
+  if(!wasOpen) item.classList.add('open');
 }
 
 // orchestrated gallery reveal — one staggered sequence on first scroll into view
